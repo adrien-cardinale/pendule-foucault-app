@@ -7,8 +7,35 @@ import { applyMilkyWayBackground } from "@/components/pendulum-animation/starfie
 
 type NavigatorWithDeviceMemory = Navigator & { deviceMemory?: number };
 
-export default function PendulumAnimation() {
+type CameraMode = "free" | "earth" | "pendulum";
+
+type PendulumAnimationProps = {
+	latitude: number;
+	longitude: number;
+	cameraMode: CameraMode;
+};
+
+export default function PendulumAnimation({
+	latitude,
+	longitude,
+	cameraMode,
+}: PendulumAnimationProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const latitudeRef = useRef(latitude);
+	const longitudeRef = useRef(longitude);
+	const cameraModeRef = useRef<CameraMode>(cameraMode);
+
+	useEffect(() => {
+		latitudeRef.current = latitude;
+	}, [latitude]);
+
+	useEffect(() => {
+		longitudeRef.current = longitude;
+	}, [longitude]);
+
+	useEffect(() => {
+		cameraModeRef.current = cameraMode;
+	}, [cameraMode]);
 
 	useEffect(() => {
 		const container = containerRef.current;
@@ -37,8 +64,6 @@ export default function PendulumAnimation() {
 		scene.add(earth);
 		scene.add(northPoleMarker);
 
-		const latitude = 46.7785;
-		const longitude = 6.6412;
 		const pendulumLength = 3;
 		const anchorOffsetAboveSurface = pendulumLength + 0.4;
 		const { pendulumRoot, pendulumPivot } = createPendulum(0, pendulumLength);
@@ -48,9 +73,6 @@ export default function PendulumAnimation() {
 		const maxAngle = THREE.MathUtils.degToRad(14);
 		const oscillationSpeed = 1.4;
 		const earthSpinSpeed = 0.0015;
-		const cameraModeRef: { current: "free" | "earth" | "pendulum" } = {
-			current: "free",
-		};
 
 		const yAxis = new THREE.Vector3(0, 1, 0);
 		const fallbackAxis = new THREE.Vector3(0, 0, 1);
@@ -63,7 +85,6 @@ export default function PendulumAnimation() {
 		const lockedCameraPosition = new THREE.Vector3();
 		const cameraViewDirection = new THREE.Vector3();
 		const cameraUpVector = new THREE.Vector3();
-		const rotationAxis = new THREE.Vector3(0, 1, 0);
 
 		const cameraOffsetNormal = 5;
 		const cameraOffsetTangent = 0;
@@ -94,8 +115,8 @@ export default function PendulumAnimation() {
 		};
 
 		const updatePendulumPlacement = () => {
-			const latitudeRad = THREE.MathUtils.degToRad(latitude);
-			const longitudeRad = THREE.MathUtils.degToRad(-longitude);
+			const latitudeRad = THREE.MathUtils.degToRad(latitudeRef.current);
+			const longitudeRad = THREE.MathUtils.degToRad(-longitudeRef.current);
 			const cosLat = Math.cos(latitudeRad);
 
 			localNormal.set(
@@ -153,20 +174,23 @@ export default function PendulumAnimation() {
 			controls.target.copy(pendulumRoot.position);
 		};
 
+		const cameraModeAxis = new THREE.Vector3(0, 1, 0);
+
 		let animationFrameId = 0;
 		const animate = () => {
 			animationFrameId = requestAnimationFrame(animate);
 
 			const t = clock.getElapsedTime();
+			controls.enabled = cameraModeRef.current !== "pendulum";
 			earth.rotation.y += earthSpinSpeed;
 			updatePendulumPlacement();
 			pendulumPivot.rotation.z = Math.sin(t * oscillationSpeed) * maxAngle;
 
 			const lockCamera = cameraModeRef.current === "pendulum";
 			if (cameraModeRef.current === "earth" && !lockCamera) {
-				camera.position.applyAxisAngle(rotationAxis, earthSpinSpeed);
-				camera.up.applyAxisAngle(rotationAxis, earthSpinSpeed);
-				controls.target.applyAxisAngle(rotationAxis, earthSpinSpeed);
+				camera.position.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
+				camera.up.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
+				controls.target.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
 				camera.lookAt(controls.target);
 			}
 
