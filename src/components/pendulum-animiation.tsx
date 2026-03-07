@@ -109,9 +109,11 @@ export default function PendulumAnimation({
 			const dh = (earthRadius * padding) / Math.max(halfH, 1e-6);
 			const distance = Math.max(dv, dh);
 
+			camera.up.set(0, 1, 0);
 			camera.position.set(0, 0, distance + 0.5);
 			camera.lookAt(0, 0, 0);
 			controls.target.set(0, 0, 0);
+			controls.update();
 		};
 
 		const updatePendulumPlacement = () => {
@@ -175,19 +177,26 @@ export default function PendulumAnimation({
 		};
 
 		const cameraModeAxis = new THREE.Vector3(0, 1, 0);
+		let previousCameraMode: CameraMode = cameraModeRef.current;
 
 		let animationFrameId = 0;
 		const animate = () => {
 			animationFrameId = requestAnimationFrame(animate);
 
 			const t = clock.getElapsedTime();
-			controls.enabled = cameraModeRef.current !== "pendulum";
+			const currentCameraMode = cameraModeRef.current;
+			if (previousCameraMode === "pendulum" && currentCameraMode === "free") {
+				camera.up.set(0, 1, 0);
+				resize();
+			}
+
+			controls.enabled = currentCameraMode !== "pendulum";
 			earth.rotation.y += earthSpinSpeed;
 			updatePendulumPlacement();
 			pendulumPivot.rotation.z = Math.sin(t * oscillationSpeed) * maxAngle;
 
-			const lockCamera = cameraModeRef.current === "pendulum";
-			if (cameraModeRef.current === "earth" && !lockCamera) {
+			const lockCamera = currentCameraMode === "pendulum";
+			if (currentCameraMode === "earth" && !lockCamera) {
 				camera.position.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
 				camera.up.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
 				controls.target.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
@@ -201,6 +210,7 @@ export default function PendulumAnimation({
 			if (controls.enabled) {
 				controls.update();
 			}
+			previousCameraMode = currentCameraMode;
 			renderer.render(scene, camera);
 		};
 
