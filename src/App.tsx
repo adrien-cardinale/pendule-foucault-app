@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import History from "@/components/history";
+import PendulumAnimation from "@/components/pendulum-animiation";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	return (
+		<Tabs defaultValue="home" className="m-12">
+			<TabsList>
+				<TabsTrigger value="home">Home</TabsTrigger>
+				<TabsTrigger value="about">Les pendule de Foucault</TabsTrigger>
+			</TabsList>
+			<TabsContent value="home">
+				<History />
+				<Card
+					className="w-full overflow-hidden py-0"
+					style={{ aspectRatio: "3 / 2" }}
+				>
+					<CardContent className="h-full p-0">
+						<PendulumAnimation />
+					</CardContent>
+				</Card>
+			</TabsContent>
+			<TabsContent value="about"></TabsContent>
+		</Tabs>
+	);
 }
 
-export default App
+export default App;
