@@ -1,25 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { createSceneContext } from "@/components/pendulum-animation/setup-scene";
 import { createEarth } from "@/components/pendulum-animation/earth";
 import { createPendulum } from "@/components/pendulum-animation/pendulum";
 import { applyMilkyWayBackground } from "@/components/pendulum-animation/starfiel";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 type NavigatorWithDeviceMemory = Navigator & { deviceMemory?: number };
 
 type CameraMode = "free" | "earth" | "pendulum";
 
-type PendulumAnimationProps = {
-	latitude: number;
-	longitude: number;
-	cameraMode: CameraMode;
-};
+export default function PendulumAnimation() {
+	const yverdonLatitude = 46.7785;
+	const yverdonLongitude = 6.6412;
 
-export default function PendulumAnimation({
-	latitude,
-	longitude,
-	cameraMode,
-}: PendulumAnimationProps) {
+	const [latitude, setLatitude] = useState(yverdonLatitude);
+	const [longitude, setLongitude] = useState(yverdonLongitude);
+	const [cameraMode, setCameraMode] = useState<CameraMode>("free");
+
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const latitudeRef = useRef(latitude);
 	const longitudeRef = useRef(longitude);
@@ -232,7 +231,9 @@ export default function PendulumAnimation({
 
 				const material = mesh.material;
 				if (Array.isArray(material)) {
-					material.forEach((mat) => mat.dispose());
+					material.forEach((mat) => {
+						mat.dispose();
+					});
 				} else if (material) {
 					material.dispose();
 				}
@@ -244,5 +245,102 @@ export default function PendulumAnimation({
 		};
 	}, []);
 
-	return <div ref={containerRef} style={{ width: "100%", height: "100%" }} />;
+	return (
+		<Card
+			className="w-full overflow-hidden py-0"
+			style={{ aspectRatio: "3 / 2" }}
+		>
+			<CardContent className="min-h-0 flex-1 p-0">
+				<div ref={containerRef} style={{ width: "100%", height: "100%" }} />
+			</CardContent>
+			<CardFooter className="flex-col items-stretch gap-3 border-t p-4">
+				<div className="grid gap-3 md:grid-cols-2">
+					<label className="flex flex-col gap-1">
+						<span className="text-xs text-muted-foreground">
+							Latitude: {latitude.toFixed(2)}°
+						</span>
+						<input
+							type="range"
+							min={-90}
+							max={90}
+							step={0.01}
+							value={latitude}
+							onChange={(event) => setLatitude(Number(event.target.value))}
+						/>
+					</label>
+					<label className="flex flex-col gap-1">
+						<span className="text-xs text-muted-foreground">
+							Longitude: {longitude.toFixed(2)}°
+						</span>
+						<input
+							type="range"
+							min={-180}
+							max={180}
+							step={0.01}
+							value={longitude}
+							onChange={(event) => setLongitude(Number(event.target.value))}
+						/>
+					</label>
+				</div>
+
+				<div className="flex flex-wrap items-center justify-between gap-2">
+					<div className="flex flex-wrap items-center gap-2">
+						<Button
+							variant={cameraMode === "free" ? "default" : "outline"}
+							size="sm"
+							onClick={() => setCameraMode("free")}
+						>
+							Caméra libre
+						</Button>
+						<Button
+							variant={cameraMode === "earth" ? "default" : "outline"}
+							size="sm"
+							onClick={() => setCameraMode("earth")}
+						>
+							Suivre la Terre
+						</Button>
+						<Button
+							variant={cameraMode === "pendulum" ? "default" : "outline"}
+							size="sm"
+							onClick={() => setCameraMode("pendulum")}
+						>
+							Caméra pendule
+						</Button>
+					</div>
+					<div className="flex flex-wrap items-center gap-2">
+						<Button
+							variant="secondary"
+							size="sm"
+							onClick={() => {
+								setLatitude(90);
+								setLongitude(0);
+							}}
+						>
+							Pôle Nord
+						</Button>
+						<Button
+							variant="secondary"
+							size="sm"
+							onClick={() => {
+								setLatitude(0);
+								setLongitude(0);
+							}}
+						>
+							Équateur
+						</Button>
+						<Button
+							variant="secondary"
+							size="sm"
+							onClick={() => {
+								setLatitude(yverdonLatitude);
+								setLongitude(yverdonLongitude);
+							}}
+						>
+							Reset Yverdon
+						</Button>
+					</div>
+				</div>
+			</CardFooter>
+		</Card>
+	);
 }
