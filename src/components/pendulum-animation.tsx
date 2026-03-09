@@ -20,6 +20,9 @@ export default function PendulumAnimation() {
 	const [cameraMode, setCameraMode] = useState<CameraMode>("free");
 
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const widgetTimeValueRef = useRef<HTMLDivElement | null>(null);
+	const widgetPrecessionValueRef = useRef<HTMLDivElement | null>(null);
+	const widgetPeriodValueRef = useRef<HTMLDivElement | null>(null);
 	const latitudeRef = useRef(latitude);
 	const longitudeRef = useRef(longitude);
 	const cameraModeRef = useRef<CameraMode>(cameraMode);
@@ -204,6 +207,54 @@ export default function PendulumAnimation() {
 		};
 
 		const cameraModeAxis = new THREE.Vector3(0, 1, 0);
+		const fullTurn = Math.PI * 2;
+
+		const formatClock = (hoursValue: number) => {
+			const wrappedHours = ((hoursValue % 24) + 24) % 24;
+			const totalSeconds = Math.floor(wrappedHours * 3600);
+			const hours = Math.floor(totalSeconds / 3600)
+				.toString()
+				.padStart(2, "0");
+			const minutes = Math.floor((totalSeconds % 3600) / 60)
+				.toString()
+				.padStart(2, "0");
+			const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+			return `${hours}:${minutes}:${seconds}`;
+		};
+
+		const updateInfoWidget = () => {
+			const normalizedRotation =
+				((earth.rotation.y % fullTurn) + fullTurn) % fullTurn;
+			const utcHours = (normalizedRotation / fullTurn) * 24;
+			const localHours = utcHours + longitudeRef.current / 15;
+
+			const latitudeRad = THREE.MathUtils.degToRad(latitudeRef.current);
+			const sinLatitude = Math.sin(latitudeRad);
+			const precessionDegPerHour = 15 * sinLatitude;
+			const absSinLatitude = Math.abs(sinLatitude);
+
+			if (widgetTimeValueRef.current) {
+				widgetTimeValueRef.current.textContent = formatClock(localHours);
+			}
+
+			if (widgetPrecessionValueRef.current) {
+				if (absSinLatitude < 1e-4) {
+					widgetPrecessionValueRef.current.textContent = "0.00°/h";
+					if (widgetPeriodValueRef.current) {
+						widgetPeriodValueRef.current.textContent = "infinie (équateur)";
+					}
+				} else {
+					const periodHours = 24 / absSinLatitude;
+					const direction =
+						precessionDegPerHour >= 0 ? "antihoraire" : "horaire";
+					widgetPrecessionValueRef.current.textContent = `${Math.abs(precessionDegPerHour).toFixed(2)}°/h (${direction})`;
+					if (widgetPeriodValueRef.current) {
+						widgetPeriodValueRef.current.textContent = `${periodHours.toFixed(1)} h`;
+					}
+				}
+			}
+		};
+
 		let previousCameraMode: CameraMode = cameraModeRef.current;
 
 		let animationFrameId = 0;
@@ -246,6 +297,7 @@ export default function PendulumAnimation() {
 			if (controls.enabled) {
 				controls.update();
 			}
+			updateInfoWidget();
 			previousCameraMode = currentCameraMode;
 			// update environment map for reflective materials
 			cubeCamera.update(renderer, scene);
@@ -253,6 +305,7 @@ export default function PendulumAnimation() {
 		};
 
 		resize();
+		updateInfoWidget();
 		window.addEventListener("resize", resize);
 		animate();
 
@@ -290,7 +343,17 @@ export default function PendulumAnimation() {
 			className="w-full overflow-hidden py-0"
 			style={{ aspectRatio: "3 / 2" }}
 		>
-			<CardContent className="min-h-0 flex-1 p-0">
+			<CardContent className="relative min-h-0 flex-1 p-0">
+				<div className="pointer-events-none absolute left-3 top-3 z-10 rounded-md bg-black/55 px-3 py-2 text-xs text-white backdrop-blur-sm">
+					<div className="grid grid-cols-[auto_1fr] gap-x-3 font-mono">
+						<div>Heure :</div>
+						<div ref={widgetTimeValueRef}>--:--:--</div>
+						<div>Précession :</div>
+						<div ref={widgetPrecessionValueRef}>--</div>
+						<div>Période :</div>
+						<div ref={widgetPeriodValueRef}>--</div>
+					</div>
+				</div>
 				<div ref={containerRef} style={{ width: "100%", height: "100%" }} />
 			</CardContent>
 			<CardFooter className="flex-col items-stretch gap-3 border-t p-4">
@@ -366,7 +429,7 @@ export default function PendulumAnimation() {
 								setLongitude(yverdonLongitude);
 							}}
 						>
-							Reset Yverdon
+							Yverdon-les-bains
 						</Button>
 					</div>
 				</div>
