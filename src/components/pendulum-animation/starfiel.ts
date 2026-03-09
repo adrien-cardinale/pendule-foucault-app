@@ -21,7 +21,6 @@ export function applyMilkyWayBackground(scene: THREE.Scene, options: MilkyWayOpt
     texture.minFilter = THREE.LinearFilter;
     texture.magFilter = THREE.LinearFilter;
     texture.generateMipmaps = false;
-    texture.flipY = true;
     texture.needsUpdate = true;
     scene.background = texture;
   };

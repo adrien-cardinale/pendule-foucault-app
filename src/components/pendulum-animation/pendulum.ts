@@ -35,7 +35,7 @@ export function createPendulum(anchorY: number, pendulumLength = 3) {
   pendulumPivot.add(bob);
   pendulumRoot.add(pendulumPivot);
 
-  return { pendulumRoot, pendulumPivot };
+  return { pendulumRoot, pendulumPivot, wire, bob };
 }
 
 export function updatePendulumOscillation(

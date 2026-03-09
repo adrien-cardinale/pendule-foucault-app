@@ -6,6 +6,7 @@ export type SceneContext = {
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer;
   controls: OrbitControls;
+  cubeCamera: THREE.CubeCamera;
 };
 
 export function createSceneContext(): SceneContext {
@@ -19,6 +20,16 @@ export function createSceneContext(): SceneContext {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
+  // Cube camera used to generate an environment map for reflective materials
+  const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, {
+    format: THREE.RGBAFormat,
+    generateMipmaps: false,
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+  });
+  const cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
+  scene.add(cubeCamera);
+
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.target.set(0, 0, 0);
@@ -30,7 +41,7 @@ export function createSceneContext(): SceneContext {
   sunLight.position.set(10, 6, 8);
   scene.add(sunLight);
 
-  return { scene, camera, renderer, controls };
+  return { scene, camera, renderer, controls, cubeCamera };
 }
 
 export function attachResize(camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void {

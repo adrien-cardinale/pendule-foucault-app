@@ -23,6 +23,7 @@ export default function PendulumAnimation() {
 	const latitudeRef = useRef(latitude);
 	const longitudeRef = useRef(longitude);
 	const cameraModeRef = useRef<CameraMode>(cameraMode);
+	const earthPlacementRequestedRef = useRef(false);
 
 	useEffect(() => {
 		latitudeRef.current = latitude;
@@ -49,7 +50,8 @@ export default function PendulumAnimation() {
 			(navigator.hardwareConcurrency !== undefined &&
 				navigator.hardwareConcurrency <= 4);
 
-		const { scene, camera, renderer, controls } = createSceneContext();
+		const { scene, camera, renderer, controls, cubeCamera } =
+			createSceneContext();
 		applyMilkyWayBackground(scene, { lowPerformance: lowPerformanceMode });
 
 		if (renderer.domElement.parentElement) {
@@ -65,10 +67,31 @@ export default function PendulumAnimation() {
 
 		const pendulumLength = 3;
 		const anchorOffsetAboveSurface = pendulumLength + 0.4;
-		const { pendulumRoot, pendulumPivot } = createPendulum(0, pendulumLength);
+		const { pendulumRoot, pendulumPivot, wire, bob } = createPendulum(
+			0,
+			pendulumLength,
+		);
 		scene.add(pendulumRoot);
 
-		const clock = new THREE.Clock();
+		// Apply a shiny metallic look using the cube camera env map
+		const applyShinyMetal = (mesh?: THREE.Mesh) => {
+			if (!mesh) return;
+			const material = mesh.material as THREE.MeshStandardMaterial;
+			material.metalness = 1;
+			material.roughness = 0.04;
+			material.envMap = cubeCamera.renderTarget.texture;
+			material.envMapIntensity = 1;
+			material.needsUpdate = true;
+		};
+
+		applyShinyMetal(wire);
+		applyShinyMetal(bob);
+
+		// initial update so reflections are available immediately
+		cubeCamera.update(renderer, scene);
+
+		const timer = new THREE.Timer();
+		timer.connect(document);
 		const maxAngle = THREE.MathUtils.degToRad(14);
 		const oscillationSpeed = 1.4;
 		const earthSpinSpeed = 0.0015;
@@ -107,9 +130,14 @@ export default function PendulumAnimation() {
 			const halfH = Math.tan(vfov / 2) * aspect;
 			const dh = (earthRadius * padding) / Math.max(halfH, 1e-6);
 			const distance = Math.max(dv, dh);
+			const orbitDistance = distance + 0.5;
+
+			// Keep free-camera initial placement aligned with the pendulum side,
+			// including current Earth rotation.
+			updatePendulumPlacement();
 
 			camera.up.set(0, 1, 0);
-			camera.position.set(0, 0, distance + 0.5);
+			camera.position.copy(worldNormal).multiplyScalar(orbitDistance);
 			camera.lookAt(0, 0, 0);
 			controls.target.set(0, 0, 0);
 			controls.update();
@@ -179,12 +207,14 @@ export default function PendulumAnimation() {
 		let previousCameraMode: CameraMode = cameraModeRef.current;
 
 		let animationFrameId = 0;
-		const animate = () => {
+		const animate = (timestamp?: number) => {
 			animationFrameId = requestAnimationFrame(animate);
+			timer.update(timestamp);
 
-			const t = clock.getElapsedTime();
+			const t = timer.getElapsed();
 			const currentCameraMode = cameraModeRef.current;
-			if (previousCameraMode === "pendulum" && currentCameraMode === "free") {
+			// Restore default orbit camera pose whenever user returns to free mode.
+			if (previousCameraMode !== "free" && currentCameraMode === "free") {
 				camera.up.set(0, 1, 0);
 				resize();
 			}
@@ -193,6 +223,13 @@ export default function PendulumAnimation() {
 			earth.rotation.y += earthSpinSpeed;
 			updatePendulumPlacement();
 			pendulumPivot.rotation.z = Math.sin(t * oscillationSpeed) * maxAngle;
+
+			if (currentCameraMode === "earth" && earthPlacementRequestedRef.current) {
+				// Reuse pendulum camera placement once when entering earth-follow mode.
+				updateLockedCameraFromPendulum();
+				earthPlacementRequestedRef.current = false;
+				controls.update();
+			}
 
 			const lockCamera = currentCameraMode === "pendulum";
 			if (currentCameraMode === "earth" && !lockCamera) {
@@ -210,6 +247,8 @@ export default function PendulumAnimation() {
 				controls.update();
 			}
 			previousCameraMode = currentCameraMode;
+			// update environment map for reflective materials
+			cubeCamera.update(renderer, scene);
 			renderer.render(scene, camera);
 		};
 
@@ -220,6 +259,7 @@ export default function PendulumAnimation() {
 		return () => {
 			cancelAnimationFrame(animationFrameId);
 			window.removeEventListener("resize", resize);
+			timer.dispose();
 			controls.dispose();
 			renderer.dispose();
 
@@ -295,7 +335,10 @@ export default function PendulumAnimation() {
 						<Button
 							variant={cameraMode === "earth" ? "default" : "outline"}
 							size="sm"
-							onClick={() => setCameraMode("earth")}
+							onClick={() => {
+								earthPlacementRequestedRef.current = true;
+								setCameraMode("earth");
+							}}
 						>
 							Suivre la Terre
 						</Button>
