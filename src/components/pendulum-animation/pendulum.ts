@@ -19,7 +19,7 @@ export function createPendulum(anchorY: number, pendulumLength = 3) {
   oscillationPlane.position.y = -(pendulumLength + 0.8) / 2;
 
   const wire = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.02, 0.02, pendulumLength, 12),
+    new THREE.CylinderGeometry(0.01, 0.01, pendulumLength, 12),
     new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.6, roughness: 0.35 })
   );
   wire.position.y = -pendulumLength / 2;

@@ -294,7 +294,7 @@ export default function PendulumAnimation() {
 				<div ref={containerRef} style={{ width: "100%", height: "100%" }} />
 			</CardContent>
 			<CardFooter className="flex-col items-stretch gap-3 border-t p-4">
-				<div className="grid gap-3 md:grid-cols-2">
+				<div className="grid gap-3 md:grid-cols-1">
 					<label className="flex flex-col gap-1">
 						<span className="text-xs text-muted-foreground">
 							Latitude: {latitude.toFixed(2)}°
@@ -306,19 +306,6 @@ export default function PendulumAnimation() {
 							step={0.01}
 							value={latitude}
 							onChange={(event) => setLatitude(Number(event.target.value))}
-						/>
-					</label>
-					<label className="flex flex-col gap-1">
-						<span className="text-xs text-muted-foreground">
-							Longitude: {longitude.toFixed(2)}°
-						</span>
-						<input
-							type="range"
-							min={-180}
-							max={180}
-							step={0.01}
-							value={longitude}
-							onChange={(event) => setLongitude(Number(event.target.value))}
 						/>
 					</label>
 				</div>
