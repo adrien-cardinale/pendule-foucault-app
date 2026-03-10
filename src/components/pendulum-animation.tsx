@@ -53,8 +53,12 @@ export default function PendulumAnimation() {
 			(navigator.hardwareConcurrency !== undefined &&
 				navigator.hardwareConcurrency <= 4);
 
+		const enableReflections = !lowPerformanceMode;
 		const { scene, camera, renderer, controls, cubeCamera } =
-			createSceneContext();
+			createSceneContext({
+				lowPerformance: lowPerformanceMode,
+				enableReflections,
+			});
 		applyMilkyWayBackground(scene, { lowPerformance: lowPerformanceMode });
 
 		if (renderer.domElement.parentElement) {
@@ -82,16 +86,23 @@ export default function PendulumAnimation() {
 			const material = mesh.material as THREE.MeshStandardMaterial;
 			material.metalness = 1;
 			material.roughness = 0.04;
-			material.envMap = cubeCamera.renderTarget.texture;
-			material.envMapIntensity = 1;
+			if (cubeCamera) {
+				material.envMap = cubeCamera.renderTarget.texture;
+				material.envMapIntensity = 1;
+			} else {
+				material.envMap = null;
+				material.envMapIntensity = 0;
+			}
 			material.needsUpdate = true;
 		};
 
 		applyShinyMetal(wire);
 		applyShinyMetal(bob);
 
-		// initial update so reflections are available immediately
-		cubeCamera.update(renderer, scene);
+		// Initial update so reflections are available immediately.
+		if (cubeCamera) {
+			cubeCamera.update(renderer, scene);
+		}
 
 		const timer = new THREE.Timer();
 		timer.connect(document);
@@ -123,6 +134,9 @@ export default function PendulumAnimation() {
 			const aspect = width / height;
 			camera.aspect = aspect;
 			camera.updateProjectionMatrix();
+			renderer.setPixelRatio(
+				Math.min(window.devicePixelRatio || 1, lowPerformanceMode ? 1 : 1.5),
+			);
 			renderer.setSize(width, height);
 
 			// Compute distance so the Earth (radius = earthRadius) fits comfortably
@@ -258,8 +272,18 @@ export default function PendulumAnimation() {
 		let previousCameraMode: CameraMode = cameraModeRef.current;
 
 		let animationFrameId = 0;
+		let lastRenderedAt = 0;
+		let reflectionTick = 0;
+		const minFrameIntervalMs = lowPerformanceMode ? 1000 / 30 : 0;
 		const animate = (timestamp?: number) => {
 			animationFrameId = requestAnimationFrame(animate);
+
+			const now = timestamp ?? performance.now();
+			if (minFrameIntervalMs > 0 && now - lastRenderedAt < minFrameIntervalMs) {
+				return;
+			}
+			lastRenderedAt = now;
+
 			timer.update(timestamp);
 
 			const t = timer.getElapsed();
@@ -299,8 +323,13 @@ export default function PendulumAnimation() {
 			}
 			updateInfoWidget();
 			previousCameraMode = currentCameraMode;
-			// update environment map for reflective materials
-			cubeCamera.update(renderer, scene);
+			// Update reflections at a lower cadence to avoid GPU stalls.
+			if (cubeCamera) {
+				reflectionTick += 1;
+				if (reflectionTick % 20 === 0) {
+					cubeCamera.update(renderer, scene);
+				}
+			}
 			renderer.render(scene, camera);
 		};
 

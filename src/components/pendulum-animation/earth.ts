@@ -49,7 +49,11 @@ export function createEarth(earthRadius = 6, options: CreateEarthOptions = {}) {
   }
 
   const earth = new THREE.Mesh(
-    new THREE.SphereGeometry(earthRadius, 64, 64),
+    new THREE.SphereGeometry(
+      earthRadius,
+      lowPerformance ? 32 : 64,
+      lowPerformance ? 24 : 64
+    ),
     material
   );
 
