@@ -2,6 +2,7 @@ import "./App.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import History from "@/components/history";
 import PendulumAnimation from "@/components/pendulum-animation";
+import LenghtAnimation from "./components/lenght-animation";
 
 function App() {
 	return (
@@ -13,6 +14,7 @@ function App() {
 			<TabsContent value="home">
 				<History />
 				<PendulumAnimation />
+				<LenghtAnimation />
 			</TabsContent>
 			<TabsContent value="about"></TabsContent>
 		</Tabs>

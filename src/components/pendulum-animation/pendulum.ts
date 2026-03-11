@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export function createPendulum(anchorY: number, pendulumLength = 3) {
+export function createPendulum(anchorY: number, pendulumLength = 3, displayPlane = true) {
   const pendulumRoot = new THREE.Group();
   pendulumRoot.position.set(0, anchorY, 0);
 
@@ -30,7 +30,9 @@ export function createPendulum(anchorY: number, pendulumLength = 3) {
   );
   bob.position.y = -pendulumLength;
 
-  pendulumRoot.add(oscillationPlane);
+  if (displayPlane) {
+    pendulumRoot.add(oscillationPlane);
+  }
   pendulumPivot.add(wire);
   pendulumPivot.add(bob);
   pendulumRoot.add(pendulumPivot);
