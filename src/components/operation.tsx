@@ -35,9 +35,7 @@ export default function Operation() {
                 complète une rotation en approximativement 32 heures.
             </p>
 
-            <div className="flex items-center justify-center">
-                <Latex tex={"\\dot \\theta = \\sin(lat)"} displayMode />
-            </div>
+            <Latex tex={"\\dot \\theta = \\sin(lat)"} displayMode={true} />
 
             <p className="leading-7 [&:not(:first-child)]:mt-6">
                 L'animation si dessous permet de visualiser ce phénomène fascinant. En ajustant la latitude
