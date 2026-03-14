@@ -11,7 +11,13 @@ type NavigatorWithDeviceMemory = Navigator & { deviceMemory?: number };
 
 type CameraMode = "free" | "earth" | "pendulum";
 
-export default function PendulumAnimation() {
+type PendulumAnimationProps = {
+	isActive?: boolean;
+};
+
+export default function PendulumAnimation({
+	isActive = true,
+}: PendulumAnimationProps) {
 	const yverdonLatitude = 46.7785;
 	const yverdonLongitude = 6.6412;
 
@@ -26,6 +32,7 @@ export default function PendulumAnimation() {
 	const latitudeRef = useRef(latitude);
 	const longitudeRef = useRef(longitude);
 	const cameraModeRef = useRef<CameraMode>(cameraMode);
+	const isActiveRef = useRef(isActive);
 	const earthPlacementRequestedRef = useRef(false);
 
 	useEffect(() => {
@@ -39,6 +46,10 @@ export default function PendulumAnimation() {
 	useEffect(() => {
 		cameraModeRef.current = cameraMode;
 	}, [cameraMode]);
+
+	useEffect(() => {
+		isActiveRef.current = isActive;
+	}, [isActive]);
 
 	useEffect(() => {
 		const container = containerRef.current;
@@ -278,6 +289,10 @@ export default function PendulumAnimation() {
 		const animate = (timestamp?: number) => {
 			animationFrameId = requestAnimationFrame(animate);
 
+			if (!isActiveRef.current) {
+				return;
+			}
+
 			const now = timestamp ?? performance.now();
 			if (minFrameIntervalMs > 0 && now - lastRenderedAt < minFrameIntervalMs) {
 				return;
@@ -419,7 +434,7 @@ export default function PendulumAnimation() {
 								setCameraMode("earth");
 							}}
 						>
-							Suivre la Terre
+							Caméra Terre
 						</Button>
 						<Button
 							variant={cameraMode === "pendulum" ? "default" : "outline"}

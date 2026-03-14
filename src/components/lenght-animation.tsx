@@ -4,10 +4,17 @@ import * as THREE from "three";
 import { createSceneContext } from "@/components/pendulum-animation/setup-scene";
 import { createPendulum } from "@/components/pendulum-animation/pendulum";
 
-export default function LenghtAnimation() {
+type LenghtAnimationProps = {
+	isActive?: boolean;
+};
+
+export default function LenghtAnimation({
+	isActive = true,
+}: LenghtAnimationProps) {
 	const [pendulumLenght, setPendulumLenght] = useState(10);
 	const [oscillationSpeed, setOscillationSpeed] = useState(1);
 	const oscillationSpeedRef = useRef(oscillationSpeed);
+	const isActiveRef = useRef(isActive);
 	const initialPendulumLengthRef = useRef(pendulumLenght);
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const pendulumRef = useRef<{
@@ -26,6 +33,10 @@ export default function LenghtAnimation() {
 	useEffect(() => {
 		oscillationSpeedRef.current = oscillationSpeed;
 	}, [oscillationSpeed]);
+
+	useEffect(() => {
+		isActiveRef.current = isActive;
+	}, [isActive]);
 
 	useEffect(() => {
 		const container = containerRef.current;
@@ -71,7 +82,7 @@ export default function LenghtAnimation() {
 			const material = mesh.material as THREE.MeshStandardMaterial;
 			material.metalness = 1;
 			material.roughness = 0.04;
-			material.envMap = cubeCamera.renderTarget.texture;
+			material.envMap = cubeCamera?.renderTarget?.texture ?? null;
 			material.envMapIntensity = 1;
 			material.needsUpdate = true;
 		};
@@ -94,6 +105,10 @@ export default function LenghtAnimation() {
 
 		const animate = (timestamp?: number) => {
 			animationFrameId = requestAnimationFrame(animate);
+			if (!isActiveRef.current) {
+				return;
+			}
+
 			timer.update(timestamp);
 			const t = timer.getElapsed();
 			const p = pendulumRef.current;
