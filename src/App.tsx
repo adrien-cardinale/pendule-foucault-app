@@ -4,7 +4,7 @@ import History from "@/components/history";
 
 import Operation from "@/components/operation";
 import { useEffect, useState } from "react";
-import { Card } from "./components/ui/card";
+import Driven from "@/components/driven";
 
 function App() {
 	const [activeTab, setActiveTab] = useState("history");
@@ -39,12 +39,16 @@ function App() {
 				<TabsList>
 					<TabsTrigger value="history">Histoire</TabsTrigger>
 					<TabsTrigger value="operation">Fonctionnement</TabsTrigger>
+					<TabsTrigger value="driven">Entretien</TabsTrigger>
 				</TabsList>
 				<TabsContent value="history" forceMount>
 					<History />
 				</TabsContent>
 				<TabsContent value="operation" forceMount>
 					<Operation isActive={operationIsActive}/>
+				</TabsContent>
+				<TabsContent value="driven">
+					<Driven />
 				</TabsContent>
 			</Tabs>
 		</div>

@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import Latex from "@/components/ui/Latex";
 import PendulumAnimation from "@/components/pendulum-animation";
-import LenghtAnimation from "@/components/lenght-animation";
+// import LenghtAnimation from "@/components/lenght-animation";
 
 type OperationProps = {
 	isActive?: boolean;
@@ -68,7 +68,7 @@ export default function Operation({ isActive = true }: OperationProps) {
 			</p>
 
 			<PendulumAnimation isActive={isActive} />
-			<LenghtAnimation isActive={isActive} />
+			{/* <LenghtAnimation isActive={isActive} /> */}
 		</Card>
 	);
 }
