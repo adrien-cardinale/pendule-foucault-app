@@ -1,8 +1,7 @@
 import "./App.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import History from "@/components/history";
-import PendulumAnimation from "@/components/pendulum-animation";
-import LenghtAnimation from "@/components/lenght-animation";
+
 import Operation from "@/components/operation";
 import { useEffect, useState } from "react";
 import { Card } from "./components/ui/card";
@@ -45,11 +44,7 @@ function App() {
 					<History />
 				</TabsContent>
 				<TabsContent value="operation" forceMount>
-					<Card className="p-6">
-					<Operation />
-					<PendulumAnimation isActive={operationIsActive} />
-					<LenghtAnimation isActive={operationIsActive} />
-					</Card>
+					<Operation isActive={operationIsActive}/>
 				</TabsContent>
 			</Tabs>
 		</div>

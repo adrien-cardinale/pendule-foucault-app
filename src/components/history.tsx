@@ -37,7 +37,7 @@ export default function History() {
         installés dans le monde entier, permettant à chaque génération
         d'observer ce ballet cosmique. Installé en 1995, le pendule de Foucault
         de la HEIG-VD reprend vie aujourd'hui après une période d'interruption,
-        offrant à nouveau cette démonstration fascinante
+        offrant à nouveau cette démonstration fascinante.
       </p>
 
       <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
@@ -45,9 +45,9 @@ export default function History() {
       </h2>
 
       <p className="leading-7 [&:not(:first-child)]:mt-6">
-        En 1995 naît dans l'esprit de nos professeurs l'ambitieux projet de réaliser 
-        un pendule de Foucault à la HEIG-VD (alors nommée l'EINEV). Installé dans le 
-        puis de lumière du bâtiment principal, cela fait maintenant plus de 25 ans que 
+        En 1995 naît dans l'esprit de nos professeurs l'ambitieux projet de réaliser
+        un pendule de Foucault à la HEIG-VD (alors nommée l'EINEV). Installé dans le
+        puits de lumière du bâtiment principal, cela fait maintenant plus de 25 ans que
         le pendule de Foucault oscille de manière permanente.
       </p>
 
@@ -57,10 +57,11 @@ export default function History() {
       </p>
 
       <p className="leading-7 [&:not(:first-child)]:mt-6">
-        Le professeur Éric Lambert a été le principal instigateur de ce projet suivi ensuite 
-        par le professeur Freddy Mudry qui a oeuvré plus d'une trentaine d'années dans l'école. 
-        Il a travaillé étroitement avec les professeurs Éric Lambert et Georges Derron pour 
-        établir les équations du mouvement du pendule et les conditions d'entretien de l'oscillation.
+        Le professeur Éric Lambert a été le principal instigateur de ce projet, suivi
+        par le professeur Freddy Mudry, qui a œuvré plus d'une trentaine d'années à
+        l'école. Freddy Mudry a travaillé étroitement avec Éric Lambert et Georges
+        Derron pour établir les équations du mouvement du pendule et les conditions
+        d'entretien de l'oscillation.
       </p>
 
       <p className="leading-7 [&:not(:first-child)]:mt-6">
@@ -69,23 +70,13 @@ export default function History() {
     
       <div className=" w-full overflow-y-auto">
         <table className="w-full">
-          {/* <thead>
-            <tr className="m-0 border-t p-0 even:bg-muted">
-              <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                King&apos;s Treasury
-              </th>
-              <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                People&apos;s happiness
-              </th>
-            </tr>
-          </thead> */}
           <tbody>
             <tr className="m-0 border-t p-0 even:bg-muted">
               <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                 1995
               </td>
               <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                C.Mahon
+                C. Mahon
               </td>
               <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                 Conception du pendule de Foucault de l'EINEV
@@ -162,7 +153,7 @@ export default function History() {
                 2014
               </td>
               <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                Yoann Jossevel 
+                Yoann Jossevel
               </td>
               <td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
                 Système d'entretien des oscillations d'un pendule de Foucault
