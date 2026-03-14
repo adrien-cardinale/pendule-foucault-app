@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import "katex/dist/katex.min.css";
 import { renderToString } from "katex";
 
