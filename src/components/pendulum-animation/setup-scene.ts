@@ -46,6 +46,7 @@ export function createSceneContext(options: SceneContextOptions = {}): SceneCont
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
+  controls.enableZoom = false;
   controls.target.set(0, 0, 0);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
