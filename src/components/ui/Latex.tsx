@@ -17,7 +17,9 @@ export default function Latex({ tex, displayMode = false, className }: Props) {
 		}
 	}, [tex, displayMode]);
 
+	const cls = `${className ?? ""} inline-block mx-1`.trim();
+
 	return (
-		<span className={className} dangerouslySetInnerHTML={{ __html: html }} />
+		<span className={cls} dangerouslySetInnerHTML={{ __html: html }} />
 	);
 }

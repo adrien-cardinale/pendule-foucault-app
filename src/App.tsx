@@ -27,7 +27,7 @@ function App() {
 
 	return (
 		<div>
-			<h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+			<h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance mt-10">
 				Le pendule de Foucault de la HEIG-VD
 			</h1>
 			<Tabs
