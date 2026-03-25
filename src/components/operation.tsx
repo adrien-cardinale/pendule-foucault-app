@@ -1,13 +1,8 @@
 import { Card } from "@/components/ui/card";
 import Latex from "@/components/ui/Latex";
 import PendulumAnimation from "@/components/pendulum-animation";
-// import LenghtAnimation from "@/components/lenght-animation";
 
-type OperationProps = {
-	isActive?: boolean;
-};
-
-export default function Operation({ isActive = true }: OperationProps) {
+export default function Operation({ isActive = true }: { isActive?: boolean }) {
 	return (
 		<Card className="p-8">
 			<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
@@ -20,8 +15,8 @@ export default function Operation({ isActive = true }: OperationProps) {
 				simplicité trompeuse. Une masse importante est suspendue à un fil de
 				grande longueur, fixé par un point d'attache permettant une oscillation
 				libre dans toutes les directions. Une fois le pendule mis en
-				oscillation, il conserve naturellement son plan d'oscillation dans
-				l'espace absolu.
+				oscillation, il conserve naturellement son plan d'oscillation dans un
+				référentiel galiléen.
 			</p>
 
 			<p className="leading-7 [&:not(:first-child)]:mt-6">
@@ -41,12 +36,7 @@ export default function Operation({ isActive = true }: OperationProps) {
 				le pendule complète une rotation en environ 32 heures.
 			</p>
 
-			<Latex
-				tex={"\\dot{\\theta} = \\Omega\\,\\sin(\\varphi)"}
-				displayMode={true}
-			/>
-
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<div className="leading-7 [&:not(:first-child)]:mt-6">
 				L'animation ci‑dessous permet de visualiser ce phénomène fascinant. En
 				ajustant la latitude du pendule, vous pouvez observer comment la vitesse
 				de rotation du plan d'oscillation change, offrant une démonstration
@@ -65,10 +55,38 @@ export default function Operation({ isActive = true }: OperationProps) {
 						pendule lui-même, mettant en évidence son oscillation dans l'espace.
 					</li>
 				</ul>
-			</p>
+			</div>
 
 			<PendulumAnimation isActive={isActive} />
-			{/* <LenghtAnimation isActive={isActive} /> */}
+
+			<p className="leading-7 [&:not(:first-child)]:mt-6">
+				Dans le référentiel terrestre, ce comportement s'explique par la force
+				de Coriolis. Lorsque la masse du pendule se déplace avec une vitesse
+				instantanée <Latex tex={"\(\\mathbf{v}\)"} />, une force fictive
+				proportionnelle à la vitesse angulaire de la Terre{" "}
+				<Latex tex={"\\boldsymbol{\\Omega}"} /> apparaît :
+			</p>
+
+			<Latex
+				tex={"\\mathbf{F}_C = -2m\\,\\boldsymbol{\\Omega} \\times \\mathbf{v}"}
+				displayMode={true}
+			/>
+
+			<p className="leading-7 [&:not(:first-child)]:mt-6">
+				Cette force est toujours perpendiculaire à la vitesse du pendule et
+				induira à chaque passage une petite déviation. C'est l'accumulation de
+				ces effets au fil des oscillations qui provoque la rotation lente du
+				plan d'oscillation. Seule la composante verticale de
+				<Latex tex={"\\boldsymbol{\\Omega}"} /> — proportionnelle à{" "}
+				<Latex tex={"\\sin(\\varphi)"} /> — contribue à la précession du plan,
+				d'où la relation
+				<Latex tex={"\\dot{\\theta} = \\Omega\\,\\sin(\\varphi)"} /> .
+			</p>
+
+			<Latex
+				tex={"\\dot{\\theta} = \\Omega\\,\\sin(\\varphi)"}
+				displayMode={true}
+			/>
 		</Card>
 	);
 }

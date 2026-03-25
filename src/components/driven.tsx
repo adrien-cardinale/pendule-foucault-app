@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
+import LenghtAnimation from "@/components/lenght-animation";
 
-export default function Driven() {
+export default function Driven({ isActive = true }: { isActive?: boolean }) {
 	return (
 		<Card className="p-8">
 			{/* <Card className="p-6"> */}
@@ -46,6 +47,8 @@ export default function Driven() {
 				position de la sphère ; ces mesures sont utilisées pour régler le
 				mouvement d'excitation du pendule.
 			</p>
+
+			<LenghtAnimation isActive={isActive} />
 		</Card>
 	);
 }

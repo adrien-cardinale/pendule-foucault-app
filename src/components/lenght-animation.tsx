@@ -8,14 +8,15 @@ type LenghtAnimationProps = {
 	isActive?: boolean;
 };
 
+const INITIAL_PENDULUM_LENGTH = 4;
+
 export default function LenghtAnimation({
 	isActive = true,
 }: LenghtAnimationProps) {
-	const [pendulumLenght, setPendulumLenght] = useState(10);
+	const [pendulumLenght] = useState(INITIAL_PENDULUM_LENGTH);
 	const [oscillationSpeed, setOscillationSpeed] = useState(1);
 	const oscillationSpeedRef = useRef(oscillationSpeed);
 	const isActiveRef = useRef(isActive);
-	const initialPendulumLengthRef = useRef(pendulumLenght);
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const pendulumRef = useRef<{
 		pendulumRoot: THREE.Group;
@@ -46,7 +47,7 @@ export default function LenghtAnimation({
 			createSceneContext();
 
 		// create pendulum once and keep refs to its parts
-		const pendulum = createPendulum(5, initialPendulumLengthRef.current, false);
+		const pendulum = createPendulum(5, INITIAL_PENDULUM_LENGTH, false);
 		pendulumRef.current = pendulum;
 
 		controls.enabled = false;
@@ -176,27 +177,11 @@ export default function LenghtAnimation({
 			style={{ aspectRatio: "3 / 2" }}
 		>
 			<CardContent className="relative min-h-0 flex-1 p-0">
-				<div ref={containerRef} style={{ width: "100%", height: "100%" }} />
-			</CardContent>
-			<CardFooter className="flex-col items-stretch gap-3 border-t p-4">
-				<div className="grid gap-3 md:grid-cols-1">
-					<label className="flex flex-col gap-1">
-						<span className="text-xs text-muted-foreground">
-							Longueur: {pendulumLenght.toFixed(2)} m
-						</span>
-						<input
-							type="range"
-							min={1}
-							max={15}
-							step={0.01}
-							value={pendulumLenght}
-							onChange={(event) =>
-								setPendulumLenght(Number(event.target.value))
-							}
-						/>
-					</label>
+				<div className="min-h-55">
+					<div ref={containerRef} style={{ width: "100%", height: "100%" }} />
 				</div>
-			</CardFooter>
+			</CardContent>
+			<CardFooter className="flex-col items-stretch gap-3 border-t p-4"></CardFooter>
 		</Card>
 	);
 }
