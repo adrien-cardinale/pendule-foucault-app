@@ -7,7 +7,21 @@ export default function Amplitude() {
     const [status, setStatus] = useState(false);
 
     useEffect(() => {
-        const client = mqtt.connect("ws://10.190.177.146:8080", {
+        const defaultMqttUrl = "ws://10.190.177.146:8080";
+        const mqttUrl = import.meta.env.VITE_MQTT_URL?.trim() || defaultMqttUrl;
+        const isHttpsPage = window.location.protocol === "https:";
+        const isInsecureWebsocket = mqttUrl.startsWith("ws://");
+
+        // Browsers block ws:// from https:// pages (mixed content / insecure operation).
+        if (isHttpsPage && isInsecureWebsocket) {
+            console.warn(
+                "MQTT disabled: insecure ws:// endpoint on an https:// page. Configure VITE_MQTT_URL with wss://",
+            );
+            setStatus(false);
+            return;
+        }
+
+        const client = mqtt.connect(mqttUrl, {
             reconnectPeriod: 1000,
             connectTimeout: 30_000,
         });

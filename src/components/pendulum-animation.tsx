@@ -119,11 +119,13 @@ export default function PendulumAnimation({
 		timer.connect(document);
 		const maxAngle = THREE.MathUtils.degToRad(14);
 		const oscillationSpeed = 1.4;
-		const earthSpinSpeed = 0.0015;
+		const simulatedDayDurationSeconds = 70;
+		const earthAngularSpeed = (Math.PI * 2) / simulatedDayDurationSeconds;
 
 		const yAxis = new THREE.Vector3(0, 1, 0);
-		const fallbackAxis = new THREE.Vector3(0, 0, 1);
-		const fixedWorldReference = new THREE.Vector3(1, 0, 0);
+		const northLocal = new THREE.Vector3();
+		const tangentLocal = new THREE.Vector3();
+		const localPrecessionRotation = new THREE.Quaternion();
 		const localNormal = new THREE.Vector3();
 		const worldNormal = new THREE.Vector3();
 		const worldTangent = new THREE.Vector3();
@@ -175,30 +177,33 @@ export default function PendulumAnimation({
 			const latitudeRad = THREE.MathUtils.degToRad(latitudeRef.current);
 			const longitudeRad = THREE.MathUtils.degToRad(-longitudeRef.current);
 			const cosLat = Math.cos(latitudeRad);
+			const sinLat = Math.sin(latitudeRad);
+			const sinLon = Math.sin(longitudeRad);
+			const cosLon = Math.cos(longitudeRad);
 
 			localNormal.set(
-				cosLat * Math.cos(longitudeRad),
-				Math.sin(latitudeRad),
-				cosLat * Math.sin(longitudeRad),
+				cosLat * cosLon,
+				sinLat,
+				cosLat * sinLon,
 			);
+
+			northLocal.set(-sinLat * cosLon, cosLat, -sinLat * sinLon).normalize();
+
+			localPrecessionRotation.setFromAxisAngle(localNormal, precessionAngle);
+			tangentLocal.copy(northLocal).applyQuaternion(localPrecessionRotation);
 
 			worldNormal
 				.copy(localNormal)
 				.applyAxisAngle(yAxis, earth.rotation.y)
 				.normalize();
 
+			worldTangent
+				.copy(tangentLocal)
+				.applyAxisAngle(yAxis, earth.rotation.y)
+				.normalize();
+
 			const anchorDistance = earthRadius + anchorOffsetAboveSurface;
 			pendulumRoot.position.copy(worldNormal).multiplyScalar(anchorDistance);
-
-			worldTangent
-				.copy(fixedWorldReference)
-				.addScaledVector(worldNormal, -fixedWorldReference.dot(worldNormal));
-			if (worldTangent.lengthSq() < 1e-8) {
-				worldTangent
-					.copy(fallbackAxis)
-					.addScaledVector(worldNormal, -fallbackAxis.dot(worldNormal));
-			}
-			worldTangent.normalize();
 
 			worldBinormal.crossVectors(worldTangent, worldNormal).normalize();
 			basisMatrix.makeBasis(worldTangent, worldNormal, worldBinormal);
@@ -233,6 +238,7 @@ export default function PendulumAnimation({
 
 		const cameraModeAxis = new THREE.Vector3(0, 1, 0);
 		const fullTurn = Math.PI * 2;
+		let precessionAngle = 0;
 
 		const formatClock = (hoursValue: number) => {
 			const wrappedHours = ((hoursValue % 24) + 24) % 24;
@@ -286,6 +292,7 @@ export default function PendulumAnimation({
 
 		let animationFrameId = 0;
 		let lastRenderedAt = 0;
+		let previousElapsed = 0;
 		let reflectionTick = 0;
 		const minFrameIntervalMs = lowPerformanceMode ? 1000 / 30 : 0;
 		const animate = (timestamp?: number) => {
@@ -304,6 +311,11 @@ export default function PendulumAnimation({
 			timer.update(timestamp);
 
 			const t = timer.getElapsed();
+			const deltaSeconds = Math.max(0, t - previousElapsed);
+			previousElapsed = t;
+			const latitudeRad = THREE.MathUtils.degToRad(latitudeRef.current);
+			const earthDeltaAngle = earthAngularSpeed * deltaSeconds;
+			precessionAngle += earthDeltaAngle * Math.sin(latitudeRad);
 			const currentCameraMode = cameraModeRef.current;
 			// Restore default orbit camera pose whenever user returns to free mode.
 			if (previousCameraMode !== "free" && currentCameraMode === "free") {
@@ -312,7 +324,7 @@ export default function PendulumAnimation({
 			}
 
 			controls.enabled = currentCameraMode !== "pendulum";
-			earth.rotation.y += earthSpinSpeed;
+			earth.rotation.y += earthDeltaAngle;
 			updatePendulumPlacement();
 			pendulumPivot.rotation.z = Math.sin(t * oscillationSpeed) * maxAngle;
 
@@ -333,9 +345,9 @@ export default function PendulumAnimation({
 
 			const lockCamera = currentCameraMode === "pendulum";
 			if (currentCameraMode === "earth" && !lockCamera) {
-				camera.position.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
-				camera.up.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
-				controls.target.applyAxisAngle(cameraModeAxis, earthSpinSpeed);
+				camera.position.applyAxisAngle(cameraModeAxis, earthDeltaAngle);
+				camera.up.applyAxisAngle(cameraModeAxis, earthDeltaAngle);
+				controls.target.applyAxisAngle(cameraModeAxis, earthDeltaAngle);
 				camera.lookAt(controls.target);
 			}
 
