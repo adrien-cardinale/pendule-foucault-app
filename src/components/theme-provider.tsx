@@ -28,14 +28,42 @@ const initialState: ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
+const isTheme = (value: string | null): value is Theme =>
+  value === "dark" || value === "light" || value === "system"
+
+const readStoredTheme = (storageKey: string, fallback: Theme): Theme => {
+  if (typeof window === "undefined") {
+    return fallback
+  }
+
+  try {
+    const stored = window.localStorage.getItem(storageKey)
+    return isTheme(stored) ? stored : fallback
+  } catch {
+    return fallback
+  }
+}
+
+const writeStoredTheme = (storageKey: string, theme: Theme) => {
+  if (typeof window === "undefined") {
+    return
+  }
+
+  try {
+    window.localStorage.setItem(storageKey, theme)
+  } catch {
+    // Certains contextes (privacy mode, sandbox) bloquent le storage.
+  }
+}
+
 export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
+  const [theme, setTheme] = useState<Theme>(() =>
+    readStoredTheme(storageKey, defaultTheme),
   )
 
   const getResolvedTheme = useCallback((theme: Theme): "dark" | "light" => {
@@ -93,7 +121,7 @@ export function ThemeProvider({
     theme,
     resolvedTheme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
+      writeStoredTheme(storageKey, theme)
       setTheme(theme)
     },
   }
