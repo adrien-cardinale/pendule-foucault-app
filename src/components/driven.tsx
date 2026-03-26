@@ -1,12 +1,16 @@
+import { useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
-import LenghtAnimation from "@/components/lenght-animation";
+// import LenghtAnimation from "@/components/lenght-animation";
 import Latex from "@/components/ui/Latex";
+import poster from "@/assets/eso0932a.jpg";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import {
 	ChartContainer,
 	type ChartConfig,
 } from "@/components/ui/chart";
+
+import mechanismeMp4 from "@/assets/mechanisme2.mp4";
 
 export default function Driven({ isActive = true }: { isActive?: boolean }) {
 	const excitationChartConfig: ChartConfig = {
@@ -37,6 +41,23 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 			};
 		},
 	);
+
+	const videoRef = useRef<HTMLVideoElement | null>(null);
+
+	useEffect(() => {
+		const v = videoRef.current;
+		if (!v) return;
+		if (isActive) {
+			const p = v.play();
+			if (p && typeof (p as Promise<void>).catch === "function") {
+				(p as Promise<void>).catch(() => {
+					/* autoplay prevented */
+				});
+			}
+		} else {
+			v.pause();
+		}
+	}, [isActive]);
 
 	return (
 		<Card className="p-8">
@@ -143,7 +164,26 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 				mouvement d'excitation du pendule.
 			</p>
 
-			<LenghtAnimation isActive={isActive} />
+			{/* <Card className="my-6"> */}
+			<figure>
+				<video
+					ref={videoRef}
+					autoPlay
+					muted
+					loop
+					preload="metadata"
+					playsInline
+					poster={poster}
+					className="my-6 w-full rounded-md border"
+				>
+					<source src={mechanismeMp4} type="video/mp4" />
+					Votre navigateur ne prend pas en charge les vidéos HTML5.
+				</video>
+				<figcaption className="sr-only">Vidéo : excitation du pendule en action</figcaption>
+			</figure>
+			{/* </Card> */}
+
+			{/* <LenghtAnimation isActive={isActive} /> */}
 		</Card>
 	);
 }
