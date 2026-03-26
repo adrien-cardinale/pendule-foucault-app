@@ -5,6 +5,7 @@ import History from "@/components/history";
 import Operation from "@/components/operation";
 import { useEffect, useState } from "react";
 import Driven from "@/components/driven";
+import Amplitude from "@/components/amplitude";
 
 function App() {
 	const [activeTab, setActiveTab] = useState("history");
@@ -31,18 +32,21 @@ function App() {
 				Le pendule de Foucault de la HEIG-VD
 			</h1>
 			<Tabs
-				defaultValue="history"
+				defaultValue="operation"
 				value={activeTab}
 				onValueChange={setActiveTab}
 				className="m-12"
 			>
-				<TabsList>
-					<TabsTrigger value="operation">Description</TabsTrigger>
-					<TabsTrigger value="history">Histoire</TabsTrigger>
-					<TabsTrigger value="driven">Réalisation</TabsTrigger>
-				</TabsList>
+				<div className="flex items-center justify-between gap-4">
+					<TabsList>
+						<TabsTrigger value="operation">Description</TabsTrigger>
+						<TabsTrigger value="history">Histoire</TabsTrigger>
+						<TabsTrigger value="driven">Réalisation</TabsTrigger>
+					</TabsList>
+					<Amplitude />
+				</div>
 				<TabsContent value="operation" forceMount>
-					<Operation isActive={operationIsActive}/>
+					<Operation isActive={operationIsActive} />
 				</TabsContent>
 				<TabsContent value="history" forceMount>
 					<History />
