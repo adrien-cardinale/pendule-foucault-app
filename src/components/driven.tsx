@@ -3,11 +3,15 @@ import { Card } from "@/components/ui/card";
 // import LenghtAnimation from "@/components/lenght-animation";
 import Latex from "@/components/ui/Latex";
 import poster from "@/assets/eso0932a.jpg";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
 	ChartContainer,
 	type ChartConfig,
+	// ChartTooltip,
+	// ChartTooltipContent,
+	ChartLegend,
+	ChartLegendContent,
 } from "@/components/ui/chart";
 
 import mechanismeMp4 from "@/assets/mechanisme2.mp4";
@@ -24,9 +28,6 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 		},
 	} satisfies ChartConfig;
 
-	// Génère un jeu de données avec la phase φ ∈ [0, 2π]
-	// - `excitation` : sin(φ)
-	// - `pendule` : sin(φ/2) (période double par rapport à `excitation`)
 	const samples = 300;
 	const data: { t: number; excitation: number; pendule: number }[] = Array.from(
 		{ length: samples },
@@ -89,7 +90,7 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 				className="my-6 rounded-md border"
 			/> */}
 			<Card>
-				<ChartContainer config={excitationChartConfig}>
+				<ChartContainer config={excitationChartConfig} aspectRatio="aspect-[10/3]">
 					<LineChart accessibilityLayer data={data}>
 						<CartesianGrid vertical={true} />
 						<XAxis
@@ -112,7 +113,26 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 								if (Math.abs(v - (3 * Math.PI) / 2) < eps) return "3π/2";
 								return v.toFixed(2);
 							}}
+							label={{
+								value: "Phase (rad)",
+								position: "bottom",
+								offset: 8,
+							}}
 						/>
+						<YAxis
+							axisLine={{ stroke: "var(--muted-foreground)" }}
+							tickLine={{ stroke: "var(--muted-foreground)" }}
+							tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
+							label={{
+								value: "Amplitude",
+								angle: -90,
+								position: "insideLeft",
+								offset: 10,
+							}}
+							width={40}
+						/>
+						{/* <ChartTooltip content={<ChartTooltipContent />} /> */}
+						<ChartLegend content={<ChartLegendContent />} />
 						<Line
 							dataKey="excitation"
 							type="monotone"
