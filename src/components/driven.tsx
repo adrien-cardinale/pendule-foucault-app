@@ -1,20 +1,12 @@
-import { useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
-// import LenghtAnimation from "@/components/lenght-animation";
+import LenghtAnimation from "@/components/lenght-animation";
 import Latex from "@/components/ui/Latex";
-import poster from "@/assets/eso0932a.jpg";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import {
 	ChartContainer,
 	type ChartConfig,
-	// ChartTooltip,
-	// ChartTooltipContent,
-	ChartLegend,
-	ChartLegendContent,
 } from "@/components/ui/chart";
-
-import mechanismeMp4 from "@/assets/mechanisme2.mp4";
 
 export default function Driven({ isActive = true }: { isActive?: boolean }) {
 	const excitationChartConfig: ChartConfig = {
@@ -28,6 +20,9 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 		},
 	} satisfies ChartConfig;
 
+	// Génère un jeu de données avec la phase φ ∈ [0, 2π]
+	// - `excitation` : sin(φ)
+	// - `pendule` : sin(φ/2) (période double par rapport à `excitation`)
 	const samples = 300;
 	const data: { t: number; excitation: number; pendule: number }[] = Array.from(
 		{ length: samples },
@@ -42,23 +37,6 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 			};
 		},
 	);
-
-	const videoRef = useRef<HTMLVideoElement | null>(null);
-
-	useEffect(() => {
-		const v = videoRef.current;
-		if (!v) return;
-		if (isActive) {
-			const p = v.play();
-			if (p && typeof (p as Promise<void>).catch === "function") {
-				(p as Promise<void>).catch(() => {
-					/* autoplay prevented */
-				});
-			}
-		} else {
-			v.pause();
-		}
-	}, [isActive]);
 
 	return (
 		<Card className="p-8">
@@ -90,7 +68,7 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 				className="my-6 rounded-md border"
 			/> */}
 			<Card>
-				<ChartContainer config={excitationChartConfig} aspectRatio="aspect-[10/3]">
+				<ChartContainer config={excitationChartConfig}>
 					<LineChart accessibilityLayer data={data}>
 						<CartesianGrid vertical={true} />
 						<XAxis
@@ -113,26 +91,7 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 								if (Math.abs(v - (3 * Math.PI) / 2) < eps) return "3π/2";
 								return v.toFixed(2);
 							}}
-							label={{
-								value: "Phase (rad)",
-								position: "bottom",
-								offset: 8,
-							}}
 						/>
-						<YAxis
-							axisLine={{ stroke: "var(--muted-foreground)" }}
-							tickLine={{ stroke: "var(--muted-foreground)" }}
-							tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
-							label={{
-								value: "Amplitude",
-								angle: -90,
-								position: "insideLeft",
-								offset: 10,
-							}}
-							width={40}
-						/>
-						{/* <ChartTooltip content={<ChartTooltipContent />} /> */}
-						<ChartLegend content={<ChartLegendContent />} />
 						<Line
 							dataKey="excitation"
 							type="monotone"
@@ -184,26 +143,7 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 				mouvement d'excitation du pendule.
 			</p>
 
-			{/* <Card className="my-6"> */}
-			<figure>
-				<video
-					ref={videoRef}
-					autoPlay
-					muted
-					loop
-					preload="metadata"
-					playsInline
-					poster={poster}
-					className="my-6 w-full rounded-md border"
-				>
-					<source src={mechanismeMp4} type="video/mp4" />
-					Votre navigateur ne prend pas en charge les vidéos HTML5.
-				</video>
-				<figcaption className="sr-only">Vidéo : excitation du pendule en action</figcaption>
-			</figure>
-			{/* </Card> */}
-
-			{/* <LenghtAnimation isActive={isActive} /> */}
+			<LenghtAnimation isActive={isActive} />
 		</Card>
 	);
 }

@@ -7,7 +7,7 @@ export default function Amplitude() {
     const [status, setStatus] = useState(false);
 
     useEffect(() => {
-        const defaultMqttUrl = "ws://10.190.177.146:8080";
+        const defaultMqttUrl = "wss://gd7d6227.ala.eu-central-1.emqxsl.com:8084/mqtt";
         const mqttUrl = import.meta.env.VITE_MQTT_URL?.trim() || defaultMqttUrl;
         const isHttpsPage = window.location.protocol === "https:";
         const isInsecureWebsocket = mqttUrl.startsWith("ws://");
@@ -22,6 +22,9 @@ export default function Amplitude() {
         }
 
         const client = mqtt.connect(mqttUrl, {
+            clientId: `foucault-web-${Math.random().toString(16).slice(2, 8)}`,
+            username: "user",
+            password: "user",
             reconnectPeriod: 1000,
             connectTimeout: 30_000,
         });

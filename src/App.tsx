@@ -8,7 +8,7 @@ import Driven from "@/components/driven";
 import Amplitude from "@/components/amplitude";
 
 function App() {
-	const [activeTab, setActiveTab] = useState("history");
+	const [activeTab, setActiveTab] = useState("operation");
 	const operationIsActive = activeTab === "operation";
 
 	useEffect(() => {
