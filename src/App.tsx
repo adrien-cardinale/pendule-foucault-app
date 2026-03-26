@@ -37,15 +37,15 @@ function App() {
 				className="m-12"
 			>
 				<TabsList>
+					<TabsTrigger value="operation">Description</TabsTrigger>
 					<TabsTrigger value="history">Histoire</TabsTrigger>
-					<TabsTrigger value="operation">Fonctionnement</TabsTrigger>
-					<TabsTrigger value="driven">Entretien</TabsTrigger>
+					<TabsTrigger value="driven">Réalisation</TabsTrigger>
 				</TabsList>
-				<TabsContent value="history" forceMount>
-					<History />
-				</TabsContent>
 				<TabsContent value="operation" forceMount>
 					<Operation isActive={operationIsActive}/>
+				</TabsContent>
+				<TabsContent value="history" forceMount>
+					<History />
 				</TabsContent>
 				<TabsContent value="driven">
 					<Driven />
