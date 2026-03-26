@@ -281,6 +281,8 @@ export default function PendulumAnimation({
 		};
 
 		let previousCameraMode: CameraMode = cameraModeRef.current;
+		let lastEarthCameraLatitude = latitudeRef.current;
+		let lastEarthCameraLongitude = longitudeRef.current;
 
 		let animationFrameId = 0;
 		let lastRenderedAt = 0;
@@ -314,10 +316,18 @@ export default function PendulumAnimation({
 			updatePendulumPlacement();
 			pendulumPivot.rotation.z = Math.sin(t * oscillationSpeed) * maxAngle;
 
-			if (currentCameraMode === "earth" && earthPlacementRequestedRef.current) {
-				// Reuse pendulum camera placement once when entering earth-follow mode.
+			const earthCameraNeedsPlacement =
+				currentCameraMode === "earth" &&
+				(earthPlacementRequestedRef.current ||
+					latitudeRef.current !== lastEarthCameraLatitude ||
+					longitudeRef.current !== lastEarthCameraLongitude);
+
+			if (earthCameraNeedsPlacement) {
+				// Keep earth-camera aligned with the pendulum when position changes.
 				updateLockedCameraFromPendulum();
 				earthPlacementRequestedRef.current = false;
+				lastEarthCameraLatitude = latitudeRef.current;
+				lastEarthCameraLongitude = longitudeRef.current;
 				controls.update();
 			}
 

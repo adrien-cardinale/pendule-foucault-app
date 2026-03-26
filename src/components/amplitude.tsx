@@ -24,7 +24,7 @@ export default function Amplitude() {
 
         const handleError = (err: Error) => {
             console.error("MQTT erreur", err);
-            setStatus("erreur");
+            setStatus(false);
         };
 
         const handleClose = () => {
