@@ -7,6 +7,9 @@ import {
 	type ChartConfig,
 } from "@/components/ui/chart";
 
+import mechanismeMp4 from "@/assets/mechanisme2.mp4";
+import mechanismeJpg from "@/assets/mechanisme.jpg";
+
 export default function Driven() {
 	const excitationChartConfig: ChartConfig = {
 		excitation: {
@@ -141,6 +144,22 @@ export default function Driven() {
 				position de la sphère ; ces mesures sont utilisées pour régler le
 				mouvement d'excitation du pendule.
 			</p>
+
+			<figure>
+				<video
+					autoPlay
+					muted
+					loop
+					preload="metadata"
+					playsInline
+					poster={mechanismeJpg}
+					className="my-6 w-full rounded-md border"
+				>
+					<source src={mechanismeMp4} type="video/mp4" />
+					Votre navigateur ne prend pas en charge les vidéos HTML5.
+				</video>
+				<figcaption className="sr-only">Vidéo : excitation du pendule en action</figcaption>
+			</figure>
 		</Card>
 	);
 }

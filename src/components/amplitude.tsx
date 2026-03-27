@@ -87,8 +87,12 @@ export default function Amplitude() {
     }, []);
 
     return (
-        <Badge variant="secondary" className="ml-auto">
-            Amplitude du pendule: {amplitude !== null ? amplitude.toFixed(1) : "---"} {status ? "🟢" : "🔴"}
-        </Badge>
+        <>
+            {status && (
+                <Badge variant="secondary" className="ml-auto">
+                    Amplitude du pendule: {amplitude !== null ? amplitude.toFixed(1) : "---"}
+                </Badge>
+            )}
+        </>
     );
 }
