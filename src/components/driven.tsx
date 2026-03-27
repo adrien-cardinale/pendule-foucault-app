@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-import LenghtAnimation from "@/components/lenght-animation";
 import Latex from "@/components/ui/Latex";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
@@ -142,8 +141,6 @@ export default function Driven({ isActive = true }: { isActive?: boolean }) {
 				position de la sphère ; ces mesures sont utilisées pour régler le
 				mouvement d'excitation du pendule.
 			</p>
-
-			<LenghtAnimation isActive={isActive} />
 		</Card>
 	);
 }
