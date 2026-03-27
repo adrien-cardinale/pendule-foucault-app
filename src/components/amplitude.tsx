@@ -90,7 +90,7 @@ export default function Amplitude() {
         <>
             {status && (
                 <Badge variant="secondary" className="ml-auto">
-                    Amplitude du pendule: {amplitude !== null ? amplitude.toFixed(1) : "---"}
+                    Amplitude du pendule: {amplitude !== null ? amplitude.toFixed(1) : "---"} mm
                 </Badge>
             )}
         </>
