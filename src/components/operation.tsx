@@ -9,7 +9,7 @@ export default function Operation({ isActive = true }: { isActive?: boolean }) {
 				{" "}
 				Fonctionnement{" "}
 			</h2>
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Un pendule de Foucault est un dispositif élégant qui rend visible
 				l'invisible : la rotation de notre planète. Son principe est d'une
 				simplicité trompeuse. Une masse importante est suspendue à un fil de
@@ -19,7 +19,7 @@ export default function Operation({ isActive = true }: { isActive?: boolean }) {
 				référentiel galiléen.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				C'est là que la magie opère : pendant que le pendule oscille fidèlement
 				dans ce plan fixe, la Terre tourne sous lui. Pour un observateur
 				terrestre, c'est le plan d'oscillation du pendule qui semble pivoter
@@ -28,7 +28,7 @@ export default function Operation({ isActive = true }: { isActive?: boolean }) {
 				antihoraire dans l'hémisphère sud.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				La vitesse de rotation du plan d'oscillation, appelée précession, dépend
 				directement de la latitude : aux pôles, le pendule effectue une rotation
 				complète en 24 heures, tandis qu'à l'équateur, aucune rotation n'est
@@ -36,7 +36,7 @@ export default function Operation({ isActive = true }: { isActive?: boolean }) {
 				le pendule complète une rotation en environ 32 heures.
 			</p>
 
-			<div className="leading-7 [&:not(:first-child)]:mt-6">
+			<div className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				L'animation ci‑dessous permet de visualiser ce phénomène fascinant. En
 				ajustant la latitude du pendule, vous pouvez observer comment la vitesse
 				de rotation du plan d'oscillation change, offrant une démonstration
@@ -59,7 +59,7 @@ export default function Operation({ isActive = true }: { isActive?: boolean }) {
 
 			<PendulumAnimation isActive={isActive} />
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Dans le référentiel terrestre, ce comportement s'explique par la force
 				de Coriolis. Lorsque la masse du pendule se déplace avec une vitesse
 				instantanée <Latex tex={"\(\\mathbf{v}\)"} />, une force fictive
@@ -72,7 +72,7 @@ export default function Operation({ isActive = true }: { isActive?: boolean }) {
 				displayMode={true}
 			/>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Cette force est toujours perpendiculaire à la vitesse du pendule et
 				induira à chaque passage une petite déviation. C'est l'accumulation de
 				ces effets au fil des oscillations qui provoque la rotation lente du

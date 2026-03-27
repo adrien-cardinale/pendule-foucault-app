@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import pantheon from "@/assets/pantheon.webp";
 
 export default function History() {
 	return (
@@ -7,12 +8,12 @@ export default function History() {
 			<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
 				Histoire
 			</h2>
-			<blockquote className="mt-6 border-l-2 pl-6 italic">
+			<blockquote className="mt-6 border-l-2 pl-6 italic text-justify">
 				Venez voir tourner la Terre, venez la voir jeudi au Panthéon ! - Léon
 				Foucault
 			</blockquote>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				C'est par ces mots audacieux que le physicien Léon Foucault invita le
 				public parisien en 1851 à assister à une démonstration extraordinaire :
 				la preuve visuelle de la rotation de notre planète. Au Panthéon de
@@ -23,7 +24,14 @@ export default function History() {
 				emblématique.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<img
+				src={pantheon}
+				alt="Le Panthéon de Paris"
+				className="my-6 rounded-md border"
+			/>
+
+
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Le pendule historique de Paris était composé d'une sphère de laiton et
 				d'acier de 28 kg, d'un diamètre de 17 cm, suspendue à un fil de 67 m de
 				long. Son oscillation lente et majestueuse, combinée à la rotation
@@ -31,7 +39,7 @@ export default function History() {
 				tangible d'un phénomène jusqu'alors abstrait.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Depuis cette expérience fondatrice, des pendules de Foucault ont été
 				installés dans le monde entier, permettant à chaque génération
 				d'observer ce ballet cosmique. Installé en 1995, le pendule de Foucault
@@ -43,7 +51,7 @@ export default function History() {
 				Le Pendule de la HEIG-VD
 			</h2>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				En 1995 naît dans l'esprit de nos professeurs l'ambitieux projet de
 				réaliser un pendule de Foucault à la HEIG-VD (alors nommée l'EINEV).
 				Installé dans le puits de lumière du bâtiment principal, cela fait
@@ -51,13 +59,13 @@ export default function History() {
 				permanente.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Par sa présence, il anime le hall de l'école et suggère quelques
 				interrogations dans l'esprit des étudiants au sujet de la physique et du
 				mouvement de la Terre.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Le professeur Éric Lambert a été le principal instigateur de ce projet,
 				suivi par le professeur Freddy Mudry, qui a œuvré plus d'une trentaine
 				d'années à l'école. Freddy Mudry a travaillé étroitement avec Éric
@@ -65,7 +73,7 @@ export default function History() {
 				pendule et les conditions d'entretien de l'oscillation.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Plusieurs travaux d'étudiants ont été réalisés sur le pendule de la
 				HEIG-VD :
 			</p>

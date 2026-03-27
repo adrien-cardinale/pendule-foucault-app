@@ -47,7 +47,7 @@ export default function Driven() {
 				Entretien de l'oscillation du pendule
 			</h2>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Un pendule qui ne serait qu'une simple masse suspendue à un fil
 				n'oscillerait que durant quelques heures avant de s'arrêter. Pour
 				maintenir les oscillations du pendule de Foucault, il convient d'induire
@@ -55,7 +55,7 @@ export default function Driven() {
 				constante.
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Le mouvement du pendule de Foucault de la HEIG-VD est entretenu par une
 				excitation paramétrique : le point de suspension subit une oscillation
 				verticale synchronisée avec le mouvement du pendule. Cette modulation
@@ -129,7 +129,7 @@ export default function Driven() {
 				</li>
 			</ol>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				En combinant ces deux actions synchronisées — relever au passage bas et
 				abaisser aux extrémités — on réalise un travail net positif sur le
 				pendule à chaque oscillation. Répétée avec la bonne phase, cette
@@ -138,7 +138,7 @@ export default function Driven() {
 				paramétrique).
 			</p>
 
-			<p className="leading-7 [&:not(:first-child)]:mt-6">
+			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
 				Dans sa version actuelle, le mécanisme d'entretien du pendule de
 				Foucault est assuré par des moteurs linéaires. Une caméra mesure la
 				position de la sphère ; ces mesures sont utilisées pour régler le
