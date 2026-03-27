@@ -56,11 +56,11 @@ export default function Driven() {
 			</p>
 
 			<p className="leading-7 [&:not(:first-child)]:mt-6">
-				Le mouvement du pendule de Foucault de la heig-vd est entretenu par une
+				Le mouvement du pendule de Foucault de la HEIG-VD est entretenu par une
 				excitation paramétrique : le point de suspension subit une oscillation
 				verticale synchronisée avec le mouvement du pendule. Cette modulation
 				fournit de l'énergie au système pour compenser les pertes dissipatives
-				(frottements de l'air, etc.). Ce transfer d'énergie est maximal lorsque
+				(frottements de l'air, etc.). Ce transfert d'énergie est maximal lorsque
 				<Latex tex={"\\omega_e = 2 \\omega_0"} />.
 			</p>
 
