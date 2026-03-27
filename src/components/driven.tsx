@@ -7,7 +7,7 @@ import {
 	type ChartConfig,
 } from "@/components/ui/chart";
 
-export default function Driven({ isActive = true }: { isActive?: boolean }) {
+export default function Driven() {
 	const excitationChartConfig: ChartConfig = {
 		excitation: {
 			label: "Excitation",
