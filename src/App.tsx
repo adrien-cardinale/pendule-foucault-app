@@ -39,9 +39,9 @@ function App() {
 			>
 				<div className="flex items-center justify-between gap-4">
 					<TabsList>
-						<TabsTrigger value="operation">Description</TabsTrigger>
-						<TabsTrigger value="history">Histoire</TabsTrigger>
-						<TabsTrigger value="driven">Réalisation</TabsTrigger>
+						<TabsTrigger data-umami-event="tab-description" value="operation">Description</TabsTrigger>
+						<TabsTrigger data-umami-event="tab-history" value="history">Histoire</TabsTrigger>
+						<TabsTrigger data-umami-event="tab-driven" value="driven">Réalisation</TabsTrigger>
 					</TabsList>
 					<Amplitude />
 				</div>

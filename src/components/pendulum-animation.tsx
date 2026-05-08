@@ -435,6 +435,7 @@ export default function PendulumAnimation({
 							step={0.01}
 							value={latitude}
 							onChange={(event) => setLatitude(Number(event.target.value))}
+							data-umami-event="animation-latitude-slider"
 						/>
 					</label>
 				</div>
@@ -445,6 +446,7 @@ export default function PendulumAnimation({
 							variant={cameraMode === "free" ? "default" : "outline"}
 							size="sm"
 							onClick={() => setCameraMode("free")}
+							data-umami-event="animation-free-camera-button"
 						>
 							Caméra libre
 						</Button>
@@ -455,11 +457,13 @@ export default function PendulumAnimation({
 								earthPlacementRequestedRef.current = true;
 								setCameraMode("earth");
 							}}
+							data-umami-event="animation-earth-camera-button"
 						>
 							Caméra Terre
 						</Button>
 						<Button
 							variant={cameraMode === "pendulum" ? "default" : "outline"}
+							data-umami-event="animation-pendulum-camera-button"
 							size="sm"
 							onClick={() => setCameraMode("pendulum")}
 						>
@@ -474,6 +478,7 @@ export default function PendulumAnimation({
 								setLatitude(90);
 								setLongitude(0);
 							}}
+							data-umami-event="animation-north-pole-button"
 						>
 							Pôle Nord
 						</Button>
@@ -484,6 +489,7 @@ export default function PendulumAnimation({
 								setLatitude(0);
 								setLongitude(0);
 							}}
+							data-umami-event="animation-equator-button"
 						>
 							Équateur
 						</Button>
@@ -494,6 +500,7 @@ export default function PendulumAnimation({
 								setLatitude(yverdonLatitude);
 								setLongitude(yverdonLongitude);
 							}}
+							data-umami-event="animation-yverdon-button"
 						>
 							Yverdon-les-bains
 						</Button>

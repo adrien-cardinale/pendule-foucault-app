@@ -5,6 +5,33 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      var UMAMI_URL = 'http://iai-pendule.iai-heig-vd.in:3000';
+      var WEBSITE_ID = '2bdad2fd-e7ad-4254-889a-2aa8317a8ad7';
+      var TIMEOUT_MS = 1500;
+
+      var controller = new AbortController();
+      var timer = setTimeout(function() { controller.abort(); }, TIMEOUT_MS);
+
+      fetch(UMAMI_URL + '/script.js', { 
+        signal: controller.signal, 
+        method: 'HEAD',
+        mode: 'no-cors'
+      })
+      .then(function() {
+        clearTimeout(timer);
+        var s = document.createElement('script');
+        s.defer = true;
+        s.src = UMAMI_URL + '/script.js';
+        s.setAttribute('data-website-id', WEBSITE_ID);
+        document.head.appendChild(s);
+      })
+      .catch(function() {
+        clearTimeout(timer);
+      });
+    })();
+  </script>
   <title>pendule-foucault-app</title>
 </head>
 
