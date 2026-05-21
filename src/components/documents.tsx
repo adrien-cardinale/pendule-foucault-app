@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 const DOC_URL = "https://zenodo.org/records/19587499";
 
 export function Documents() {
-    const isKiosk = navigator.userAgent.includes('PenduleKiosk')
-    console.log("Navigator user agent:", navigator.userAgent, "isKiosk:", isKiosk)
+    const isKiosk = navigator.userAgent.includes('PenduleKiosk');
+    
     return (
         <Card className="p-8 flex items-center justify-center">
             <Card className="w-fit p-8">

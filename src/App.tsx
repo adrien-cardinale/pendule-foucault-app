@@ -4,6 +4,7 @@ import History from "@/components/history";
 
 import Operation from "@/components/operation";
 import { useEffect, useState } from "react";
+import { useInactivityReset } from "@/hooks/useInactivityReset";
 import Driven from "@/components/driven";
 import Amplitude from "@/components/amplitude";
 import { Documents } from "@/components/documents";
@@ -11,6 +12,16 @@ import { Documents } from "@/components/documents";
 function App() {
 	const [activeTab, setActiveTab] = useState("operation");
 	const operationIsActive = activeTab === "operation";
+
+	const isKiosk = navigator.userAgent.includes('PenduleKiosk');
+
+	if (isKiosk) {
+		useInactivityReset(30 * 60 * 1000, () => {
+			history.scrollRestoration = 'manual';
+			window.location.reload();
+		});
+	}
+
 
 	useEffect(() => {
 		if (!operationIsActive) {
