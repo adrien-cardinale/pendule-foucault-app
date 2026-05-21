@@ -6,6 +6,7 @@ import Operation from "@/components/operation";
 import { useEffect, useState } from "react";
 import Driven from "@/components/driven";
 import Amplitude from "@/components/amplitude";
+import { Documents } from "@/components/documents";
 
 function App() {
 	const [activeTab, setActiveTab] = useState("operation");
@@ -42,6 +43,7 @@ function App() {
 						<TabsTrigger data-umami-event="tab-description" value="operation">Description</TabsTrigger>
 						<TabsTrigger data-umami-event="tab-history" value="history">Histoire</TabsTrigger>
 						<TabsTrigger data-umami-event="tab-driven" value="driven">Réalisation</TabsTrigger>
+						<TabsTrigger data-umami-event="tab-documents" value="documents">Documents</TabsTrigger>
 					</TabsList>
 					<Amplitude />
 				</div>
@@ -53,6 +55,9 @@ function App() {
 				</TabsContent>
 				<TabsContent value="driven">
 					<Driven />
+				</TabsContent>
+				<TabsContent value="documents">
+					<Documents />
 				</TabsContent>
 			</Tabs>
 		</div>
