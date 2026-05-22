@@ -66,11 +66,10 @@ export default function History() {
 			</p>
 
 			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
-				Le professeur Éric Lambert a été le principal instigateur de ce projet,
-				suivi par le professeur Freddy Mudry, qui a œuvré plus d'une trentaine
-				d'années à l'école. Freddy Mudry a travaillé étroitement avec Éric
-				Lambert et Georges Derron pour établir les équations du mouvement du
-				pendule et les conditions d'entretien de l'oscillation.
+				Le professeur Freddy Mudry a été l’instigateur de ce projet. Il a été immédiatement
+				suivi par ses collègues Éric Lambert et Georges Derron qui en ont fait l’analyse théo‐
+				rique détaillée et ainsi permis sa réalisation dans le cadre des deux premiers travaux
+				de diplôme en 1995.
 			</p>
 
 			<p className="leading-7 [&:not(:first-child)]:mt-6 text-justify">
