@@ -42,7 +42,57 @@ export default function Driven() {
 
 	return (
 		<Card className="p-8">
-			{/* <Card className="p-6"> */}
+			<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mt-6">
+				Caractéristiques techniques
+			</h2>
+
+			<div className="w-full overflow-hidden rounded-md border">
+				<table className="w-full">
+					<tbody>
+						<tr className="m-0 border-t p-0 even:bg-muted">
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								Longueur du fil
+							</td>
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								20 m
+							</td>
+						</tr>
+						<tr className="m-0 border-t p-0 even:bg-muted">
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								Diamètre du fil
+							</td>
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								1 mm
+							</td>
+						</tr>
+						<tr className="m-0 border-t p-0 even:bg-muted">
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								Masse de la sphère
+							</td>
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								20 kg
+							</td>
+						</tr>
+						<tr className="m-0 border-t p-0 even:bg-muted">
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								Période du pendule
+							</td>
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								9 sec
+							</td>
+						</tr>
+						<tr className="m-0 border-t p-0 even:bg-muted">
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								Précession
+							</td>
+							<td className="border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
+								33 heures
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
 			<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
 				Entretien de l'oscillation du pendule
 			</h2>
@@ -160,6 +210,7 @@ export default function Driven() {
 				</video>
 				<figcaption className="sr-only">Vidéo : excitation du pendule en action</figcaption>
 			</figure>
+
 		</Card>
 	);
 }

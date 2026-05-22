@@ -77,7 +77,7 @@ export default function History() {
 				HEIG-VD :
 			</p>
 
-			<div className=" w-full overflow-y-auto">
+			<div className=" w-full overflow-hidden rounded-md border">
 				<table className="w-full">
 					<tbody>
 						<tr className="m-0 border-t p-0 even:bg-muted">
