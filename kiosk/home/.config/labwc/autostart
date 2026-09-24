@@ -1,0 +1,4 @@
+# Rotation de l'écran (portrait, 90° sens horaire)
+wlr-randr --output HDMI-A-1 --transform 90
+# Démarrage automatique de l'application en kiosk
+$HOME/bin/kiosk.sh &
