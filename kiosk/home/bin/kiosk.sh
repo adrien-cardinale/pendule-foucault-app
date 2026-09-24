@@ -3,6 +3,10 @@
 URL="https://adrien-cardinale.github.io/pendule-foucault-app/"
 # Profil Chromium en RAM : aucune écriture sur la carte SD, profil neuf à chaque démarrage
 PROFILE="/dev/shm/chromium-kiosk"
+# User agent standard + marqueur "PenduleKiosk" : l'application l'utilise pour
+# afficher un QR code au lieu des liens et se recharger après inactivité
+CHROME_MAJOR=$(chromium --version | grep -oE '[0-9]+' | head -1)
+USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${CHROME_MAJOR}.0.0.0 Safari/537.36 PenduleKiosk"
 
 # Attendre le réseau (max ~60 s) pour éviter la page d'erreur au démarrage
 for i in $(seq 1 60); do
@@ -21,6 +25,7 @@ while true; do
     chromium \
         --kiosk "$URL" \
         --ozone-platform=wayland \
+        --user-agent="$USER_AGENT" \
         --user-data-dir="$PROFILE" \
         --disk-cache-size=52428800 \
         --noerrdialogs \
