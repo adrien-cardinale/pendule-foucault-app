@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<labwc_config>
+  <core><decoration>server</decoration></core>
+  <windowRules>
+    <windowRule identifier="chromium*" serverDecoration="no" />
+  </windowRules>
+  <!-- Mappe l'écran tactile sur la sortie HDMI -->
+  <touch mapToOutput="HDMI-A-1" mouseEmulation="no" />
+</labwc_config>
